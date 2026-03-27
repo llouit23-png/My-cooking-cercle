@@ -1,0 +1,27 @@
+[
+  {
+    "user_id": 1,
+    "name": "Copine 1",
+    "notes": "N'aime aucun fruit ni légume"
+  },
+  {
+    "user_id": 2,
+    "name": "Copine 2",
+    "notes": "Intolérante au gluten et n'aime pas le saumon"
+  },
+  {
+    "user_id": 3,
+    "name": "Copine 3",
+    "notes": "N'aime pas les oignons frits ni les concombres"
+  },
+  {
+    "user_id": 4,
+    "name": "Copine 4",
+    "notes": "Intolérante au gluten"
+  },
+  {
+    "user_id": 5,
+    "name": "Copine 5",
+    "notes": "N'aime pas le fromage"
+  }
+]

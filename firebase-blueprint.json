@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the application (friend).",
+      "type": "object",
+      "properties": {
+        "user_id": { "type": "integer", "description": "Unique identifier for the user." },
+        "name": { "type": "string", "description": "Name of the user." },
+        "notes": { "type": "string", "description": "Additional notes about the user's preferences." }
+      },
+      "required": ["user_id", "name"]
+    },
+    "DietaryConstraint": {
+      "title": "DietaryConstraint",
+      "description": "A dietary restriction or dislike for a user.",
+      "type": "object",
+      "properties": {
+        "constraint_id": { "type": "integer", "description": "Unique identifier for the constraint." },
+        "user_id": { "type": "integer", "description": "ID of the user this constraint applies to." },
+        "constraint_type": { "type": "string", "description": "Type of constraint (intolerance, dislike, régime)." },
+        "constraint_value": { "type": "string", "description": "The specific value (e.g., 'gluten', 'halal')." }
+      },
+      "required": ["constraint_id", "user_id", "constraint_type", "constraint_value"]
+    },
+    "Recipe": {
+      "title": "Recipe",
+      "description": "A cooking recipe.",
+      "type": "object",
+      "properties": {
+        "recipe_id": { "type": "integer", "description": "Unique identifier for the recipe." },
+        "title": { "type": "string", "description": "Title of the recipe." },
+        "category": { "type": "string", "description": "Category (e.g., Plat principal, Dessert)." },
+        "ingredients": { "type": "array", "items": { "type": "string" }, "description": "List of ingredient names." },
+        "ingredients_details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "amount": { "type": "number" },
+              "unit": { "type": "string" }
+            }
+          }
+        },
+        "base_servings": { "type": "integer" },
+        "steps": { "type": "array", "items": { "type": "string" } },
+        "prep_time_minutes": { "type": "integer" },
+        "difficulty": { "type": "string" },
+        "gluten_free": { "type": "boolean" },
+        "dairy_free": { "type": "boolean" },
+        "vegetarian": { "type": "boolean" },
+        "contains_fish": { "type": "boolean" },
+        "contains_vegetables": { "type": "boolean" },
+        "halal": { "type": "boolean" },
+        "kosher": { "type": "boolean" },
+        "contains_pork": { "type": "boolean" }
+      },
+      "required": ["recipe_id", "title", "category"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of users."
+    },
+    "/constraints/{constraintId}": {
+      "schema": "DietaryConstraint",
+      "description": "Collection of dietary constraints."
+    },
+    "/recipes/{recipeId}": {
+      "schema": "Recipe",
+      "description": "Collection of recipes."
+    }
+  }
+}

@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Document ID: {userId}
+    // Fields:
+    //   - user_id: number (required)
+    //   - name: string (required)
+    //   - notes: string (optional)
+    //
+    // Collection: constraints
+    // Document ID: {constraintId}
+    // Fields:
+    //   - constraint_id: number (required)
+    //   - user_id: number (required)
+    //   - constraint_type: string (required)
+    //   - constraint_value: string (required)
+    //
+    // Collection: recipes
+    // Document ID: {recipeId}
+    // Fields:
+    //   - recipe_id: number (required)
+    //   - title: string (required)
+    //   - category: string (required)
+    //   - ingredients: list (required)
+    //   - ingredients_details: list (required)
+    //   - base_servings: number (required)
+    //   - steps: list (required)
+    //   - prep_time_minutes: number (required)
+    //   - difficulty: string (required)
+    //   - gluten_free: bool (required)
+    //   - dairy_free: bool (required)
+    //   - vegetarian: bool (required)
+    //   - contains_fish: bool (required)
+    //   - contains_vegetables: bool (required)
+    //   - halal: bool (required)
+    //   - kosher: bool (required)
+    //   - contains_pork: bool (required)
+    //
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/app_users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "llouit23@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    // Domain Validators
+    function isValidUser(data) {
+      return data.keys().hasAll(['user_id', 'name']) &&
+             data.user_id is number &&
+             data.name is string && data.name.size() > 0 && data.name.size() < 100;
+    }
+
+    function isValidConstraint(data) {
+      return data.keys().hasAll(['constraint_id', 'user_id', 'constraint_type', 'constraint_value']) &&
+             data.constraint_id is number &&
+             data.user_id is number &&
+             data.constraint_type is string &&
+             data.constraint_value is string;
+    }
+
+    function isValidRecipe(data) {
+      return data.keys().hasAll(['recipe_id', 'title', 'category']) &&
+             data.recipe_id is number &&
+             data.title is string && data.title.size() > 0 &&
+             data.category is string;
+    }
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated() && isValidUser(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /constraints/{constraintId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated() && isValidConstraint(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /recipes/{recipeId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated() && isValidRecipe(request.resource.data);
+      allow delete: if isAdmin();
+    }
+
+    match /app_users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}

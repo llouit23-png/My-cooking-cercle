@@ -1,0 +1,5 @@
+{
+  "name": "My Cooking Cercle",
+  "description": "Application de recommandation de recettes personnalisées pour mon cercle d'amis.",
+  "requestFramePermissions": []
+}

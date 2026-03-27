@@ -1,0 +1,422 @@
+[
+  {
+    "recommendation_id": 1,
+    "user_id": 1,
+    "recipe_id": 1,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 2,
+    "user_id": 1,
+    "recipe_id": 2,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient des légumes"
+  },
+  {
+    "recommendation_id": 3,
+    "user_id": 1,
+    "recipe_id": 3,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient des légumes"
+  },
+  {
+    "recommendation_id": 4,
+    "user_id": 1,
+    "recipe_id": 4,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 5,
+    "user_id": 1,
+    "recipe_id": 5,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 6,
+    "user_id": 1,
+    "recipe_id": 6,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient des légumes"
+  },
+  {
+    "recommendation_id": 7,
+    "user_id": 1,
+    "recipe_id": 7,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 8,
+    "user_id": 1,
+    "recipe_id": 8,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient des légumes"
+  },
+  {
+    "recommendation_id": 9,
+    "user_id": 1,
+    "recipe_id": 9,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 10,
+    "user_id": 1,
+    "recipe_id": 10,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 11,
+    "user_id": 1,
+    "recipe_id": 11,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 12,
+    "user_id": 1,
+    "recipe_id": 12,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient des légumes"
+  },
+  {
+    "recommendation_id": 13,
+    "user_id": 2,
+    "recipe_id": 1,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 14,
+    "user_id": 2,
+    "recipe_id": 2,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 15,
+    "user_id": 2,
+    "recipe_id": 3,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 16,
+    "user_id": 2,
+    "recipe_id": 4,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 17,
+    "user_id": 2,
+    "recipe_id": 5,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient du gluten"
+  },
+  {
+    "recommendation_id": 18,
+    "user_id": 2,
+    "recipe_id": 6,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 19,
+    "user_id": 2,
+    "recipe_id": 7,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 20,
+    "user_id": 2,
+    "recipe_id": 8,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 21,
+    "user_id": 2,
+    "recipe_id": 9,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient du gluten"
+  },
+  {
+    "recommendation_id": 22,
+    "user_id": 2,
+    "recipe_id": 10,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 23,
+    "user_id": 2,
+    "recipe_id": 11,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient du saumon"
+  },
+  {
+    "recommendation_id": 24,
+    "user_id": 2,
+    "recipe_id": 12,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient du gluten"
+  },
+  {
+    "recommendation_id": 25,
+    "user_id": 3,
+    "recipe_id": 1,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 26,
+    "user_id": 3,
+    "recipe_id": 2,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 27,
+    "user_id": 3,
+    "recipe_id": 3,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 28,
+    "user_id": 3,
+    "recipe_id": 4,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 29,
+    "user_id": 3,
+    "recipe_id": 5,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 30,
+    "user_id": 3,
+    "recipe_id": 6,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 31,
+    "user_id": 3,
+    "recipe_id": 7,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 32,
+    "user_id": 3,
+    "recipe_id": 8,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 33,
+    "user_id": 3,
+    "recipe_id": 9,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 34,
+    "user_id": 3,
+    "recipe_id": 10,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 35,
+    "user_id": 3,
+    "recipe_id": 11,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 36,
+    "user_id": 3,
+    "recipe_id": 12,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient des oignons frits"
+  },
+  {
+    "recommendation_id": 37,
+    "user_id": 4,
+    "recipe_id": 1,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 38,
+    "user_id": 4,
+    "recipe_id": 2,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 39,
+    "user_id": 4,
+    "recipe_id": 3,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 40,
+    "user_id": 4,
+    "recipe_id": 4,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 41,
+    "user_id": 4,
+    "recipe_id": 5,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient du gluten"
+  },
+  {
+    "recommendation_id": 42,
+    "user_id": 4,
+    "recipe_id": 6,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 43,
+    "user_id": 4,
+    "recipe_id": 7,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 44,
+    "user_id": 4,
+    "recipe_id": 8,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 45,
+    "user_id": 4,
+    "recipe_id": 9,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient du gluten"
+  },
+  {
+    "recommendation_id": 46,
+    "user_id": 4,
+    "recipe_id": 10,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 47,
+    "user_id": 4,
+    "recipe_id": 11,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 48,
+    "user_id": 4,
+    "recipe_id": 12,
+    "compatibility_score": 0,
+    "excluded_reason": "Contient du gluten"
+  },
+  {
+    "recommendation_id": 49,
+    "user_id": 5,
+    "recipe_id": 1,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 50,
+    "user_id": 5,
+    "recipe_id": 2,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 51,
+    "user_id": 5,
+    "recipe_id": 3,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 52,
+    "user_id": 5,
+    "recipe_id": 4,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 53,
+    "user_id": 5,
+    "recipe_id": 5,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 54,
+    "user_id": 5,
+    "recipe_id": 6,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 55,
+    "user_id": 5,
+    "recipe_id": 7,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 56,
+    "user_id": 5,
+    "recipe_id": 8,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 57,
+    "user_id": 5,
+    "recipe_id": 9,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 58,
+    "user_id": 5,
+    "recipe_id": 10,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 59,
+    "user_id": 5,
+    "recipe_id": 11,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  },
+  {
+    "recommendation_id": 60,
+    "user_id": 5,
+    "recipe_id": 12,
+    "compatibility_score": 100,
+    "excluded_reason": null
+  }
+]

@@ -1,0 +1,9 @@
+constraint_id,user_id,constraint_type,constraint_value
+1,1,dislike,fruits
+2,1,dislike,légumes
+3,2,intolerance,gluten
+4,2,dislike,saumon
+5,3,dislike,oignons frits
+6,3,dislike,concombre
+7,4,intolerance,gluten
+8,5,dislike,fromage

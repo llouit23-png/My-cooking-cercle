@@ -1,0 +1,10 @@
+[
+  { "constraint_id": 1, "user_id": 1, "constraint_type": "dislike", "constraint_value": "fruits" },
+  { "constraint_id": 2, "user_id": 1, "constraint_type": "dislike", "constraint_value": "légumes" },
+  { "constraint_id": 3, "user_id": 2, "constraint_type": "intolerance", "constraint_value": "gluten" },
+  { "constraint_id": 4, "user_id": 2, "constraint_type": "dislike", "constraint_value": "saumon" },
+  { "constraint_id": 5, "user_id": 3, "constraint_type": "dislike", "constraint_value": "oignons frits" },
+  { "constraint_id": 6, "user_id": 3, "constraint_type": "dislike", "constraint_value": "concombre" },
+  { "constraint_id": 7, "user_id": 4, "constraint_type": "intolerance", "constraint_value": "gluten" },
+  { "constraint_id": 8, "user_id": 5, "constraint_type": "dislike", "constraint_value": "fromage" }
+]
