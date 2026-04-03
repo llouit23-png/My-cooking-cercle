@@ -55,7 +55,17 @@ export function checkCompatibility(recipe: Recipe, user: User, constraints: Diet
     // Special case for Copine 1: No fruits, no vegetables
     if (value === 'fruit' || value === 'fruits') {
       const fruitKeywords = ['pomme', 'banane', 'fraise', 'orange', 'citron', 'ananas', 'mangue', 'pêche', 'abricot', 'raisin', 'cerise'];
-      if (recipe.ingredients.some(i => fruitKeywords.some(k => i.toLowerCase().includes(k)))) {
+      if (recipe.ingredients.some(i => {
+        const ingLower = i.toLowerCase();
+        return fruitKeywords.some(k => {
+          if (k === 'pomme') {
+            // Exclude "pomme de terre" from the "pomme" (apple) check
+            const withoutPotato = ingLower.replace(/pomme de terre/g, '');
+            return withoutPotato.includes('pomme');
+          }
+          return ingLower.includes(k);
+        });
+      })) {
         reasons.add("Contient des fruits");
       }
     }

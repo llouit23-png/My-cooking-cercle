@@ -4,7 +4,6 @@ import { ChefHat, Users, BookOpen, Home as HomeIcon, Menu, X, LogIn, LogOut, Glo
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
 import { auth, googleProvider, signInWithPopup, onAuthStateChanged, FirebaseUser } from './firebase';
-import Migration from './Migration';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -159,7 +158,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {user && user.email === 'llouit23@gmail.com' && <Migration />}
         {user ? children : (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <ChefHat className="w-16 h-16 text-[#FF7675] mb-4 opacity-20" />
