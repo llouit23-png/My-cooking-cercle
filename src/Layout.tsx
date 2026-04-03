@@ -12,7 +12,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
+    console.log("Initialisation de l'état d'authentification...");
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("Changement d'état d'authentification:", user ? user.email : "Déconnecté");
       setUser(user);
       setLoading(false);
     });
@@ -20,10 +22,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   const handleLogin = async () => {
+    console.log("Tentative de connexion Google...");
     try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log("Connexion réussie:", result.user.email);
+    } catch (error: any) {
       console.error('Login failed:', error);
+      if (error.code === 'auth/unauthorized-domain') {
+        alert("Erreur : Ce domaine n'est pas autorisé dans la console Firebase. Veuillez ajouter votre URL Netlify dans 'Authorized domains' sur Firebase.");
+      } else {
+        alert("Erreur de connexion : " + error.message);
+      }
     }
   };
 

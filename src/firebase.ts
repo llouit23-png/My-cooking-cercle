@@ -21,6 +21,12 @@ export const auth = getAuth(app);
 export const db = getFirestore(app, config.firestoreDatabaseId);
 export const googleProvider = new GoogleAuthProvider();
 
+// Exportations nécessaires pour le reste de l'application
+export { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+export type { FirebaseUser };
+export { collection, doc, setDoc, getDoc, getDocs, deleteDoc, query, where, onSnapshot, getDocFromServer };
+export type { FirestoreError };
+
 export enum OperationType {
   CREATE = 'create',
   UPDATE = 'update',
@@ -83,6 +89,3 @@ async function testConnection() {
   }
 }
 testConnection();
-
-export { signInWithPopup, onAuthStateChanged, collection, doc, setDoc, getDoc, getDocs, deleteDoc, query, where, onSnapshot };
-export type { FirebaseUser };
