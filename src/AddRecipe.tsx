@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { Recipe, IngredientDetail } from './types';
 import { cn, capitalizeWords } from './lib/utils';
-import { db, collection, onSnapshot, setDoc, doc, OperationType, handleFirestoreError } from './firebase';
+import { db, collection, onSnapshot, setDoc, doc, OperationType, handleFirestoreError, auth } from './firebase';
 
 export default function AddRecipe() {
   const [recipes, setRecipes] = React.useState<Recipe[]>([]);
@@ -48,6 +48,11 @@ export default function AddRecipe() {
   }, []);
 
   const handleSave = async () => {
+    if (!auth.currentUser) {
+      alert("Veuillez vous connecter pour enregistrer une recette.");
+      return;
+    }
+
     if (!formData.title || formData.ingredients_details?.length === 0 || formData.steps?.length === 0) {
       alert("Veuillez remplir tous les champs obligatoires (titre, ingrédients, étapes).");
       return;

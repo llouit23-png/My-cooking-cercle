@@ -88,13 +88,28 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ))}
               
               {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 text-sm font-medium text-[#636E72] hover:text-[#FF7675] transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Déconnexion
-                </button>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    {user.photoURL && (
+                      <img 
+                        src={user.photoURL} 
+                        alt={user.displayName || ""} 
+                        className="w-8 h-8 rounded-full border border-[#E5E7EB]"
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
+                    <span className="hidden lg:block text-sm font-medium text-[#2D3436]">
+                      {user.displayName}
+                    </span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 text-sm font-medium text-[#636E72] hover:text-[#FF7675] transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Déconnexion
+                  </button>
+                </div>
               ) : (
                 <button
                   onClick={handleLogin}
@@ -167,21 +182,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {user ? children : (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <ChefHat className="w-16 h-16 text-[#FF7675] mb-4 opacity-20" />
-            <h2 className="text-2xl font-bold mb-2">Bienvenue sur My Cooking Cercle</h2>
-            <p className="text-[#636E72] mb-8 max-w-md">
-              Veuillez vous connecter pour accéder à votre carnet de recettes et gérer votre cercle d'amies.
-            </p>
-            <button
-              onClick={handleLogin}
-              className="bg-[#FF7675] text-white px-8 py-3 rounded-2xl font-semibold shadow-lg shadow-[#FF7675]/20 hover:bg-[#FF6B6B] transition-all transform hover:-translate-y-1"
-            >
-              Se connecter avec Google
-            </button>
-          </div>
-        )}
+        {children}
       </main>
 
       <footer className="bg-white border-t border-[#E5E7EB] py-12 mt-20">
