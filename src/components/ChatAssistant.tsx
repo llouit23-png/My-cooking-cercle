@@ -40,7 +40,7 @@ export default function ChatAssistant({ users, recipes, constraints }: ChatAssis
     setIsTyping(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY! });
       
       const systemInstruction = `
         Tu es un assistant culinaire intelligent pour l'application "My Cooking Circle".

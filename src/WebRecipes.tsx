@@ -27,7 +27,7 @@ export default function WebRecipes() {
     setResults([]);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY! });
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: `Trouve des recettes de cuisine sur internet pour : "${query}". 
