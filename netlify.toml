@@ -3,6 +3,11 @@
   publish = "dist"
 
 [[redirects]]
+  from = "/__/auth/*"
+  to = "https://gen-lang-client-0468097792.firebaseapp.com/__/auth/:splat"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

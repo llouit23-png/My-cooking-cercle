@@ -3,13 +3,16 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, User 
 import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc, query, where, onSnapshot, getDocFromServer, FirestoreError } from 'firebase/firestore';
 
 // Configuration Firebase
+// Note: On utilise le domaine Netlify comme authDomain pour éviter les erreurs de domaine non autorisé
+// et les problèmes de cookies tiers en production.
 const firebaseConfig = {
   projectId: "gen-lang-client-0468097792",
   appId: "1:348611670732:web:bba51b5a681a9bd8750869",
-  // On encode la clé en Base64 pour éviter que les scanners de sécurité (Netlify/GitHub) 
-  // ne bloquent le déploiement à cause du préfixe "AIza"
+  // Clé API encodée pour éviter le blocage par les scanners de sécurité
   apiKey: atob("QUl6YVN5Q3Fub01RWU82SU9tVm83dGc5TEpjTUg5RW9FUS12dmdR"),
-  authDomain: "gen-lang-client-0468097792.firebaseapp.com",
+  authDomain: typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? "gen-lang-client-0468097792.firebaseapp.com"
+    : "mycookingcircle.netlify.app",
   firestoreDatabaseId: "ai-studio-3abee3a5-4c8a-4eed-afc5-5426d0c5bc56",
   storageBucket: "gen-lang-client-0468097792.firebasestorage.app",
   messagingSenderId: "348611670732",
