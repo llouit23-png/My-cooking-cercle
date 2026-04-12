@@ -2,23 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, User as FirebaseUser } from 'firebase/auth';
 import { getFirestore, collection, doc, setDoc, getDoc, getDocs, deleteDoc, query, where, onSnapshot, getDocFromServer, FirestoreError } from 'firebase/firestore';
 
-// Configuration Firebase intégrée directement pour le déploiement GitHub/Netlify
-// La clé est encodée en Base64 pour contourner le scanner de sécurité de Netlify
-const config = {
-  projectId: "gen-lang-client-0468097792",
-  appId: "1:348611670732:web:bba51b5a681a9bd8750869",
-  apiKey: atob("QUl6YVN5Q3Fub01RWU82SU9tVm83dGc5TEpjTUg5RW9FUS12dmdR"),
-  authDomain: "gen-lang-client-0468097792.firebaseapp.com",
-  firestoreDatabaseId: "ai-studio-3abee3a5-4c8a-4eed-afc5-5426d0c5bc56",
-  storageBucket: "gen-lang-client-0468097792.firebasestorage.app",
-  messagingSenderId: "348611670732",
-  measurementId: ""
-};
+import firebaseConfig from '../firebase-applet-config.json';
 
 // Initialize Firebase
-const app = initializeApp(config);
+const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app, config.firestoreDatabaseId);
+export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const googleProvider = new GoogleAuthProvider();
 
 // Exportations nécessaires pour le reste de l'application

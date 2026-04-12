@@ -156,16 +156,12 @@ export default function Home() {
                 className="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl transition-all"
               >
                 <div className="h-48 bg-gray-100 relative overflow-hidden">
-                  {recipe.image_url ? (
-                    <img 
-                      src={recipe.image_url} 
-                      alt={recipe.title}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200" />
-                  )}
+                  <img 
+                    src={recipe.image_url || `https://picsum.photos/seed/${recipe.title}/800/600`} 
+                    alt={recipe.title}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   <div className="absolute bottom-4 left-6 flex items-center gap-2">
                     <span className="px-2 py-1 bg-white/20 rounded-full text-[10px] font-bold uppercase tracking-wider backdrop-blur-md text-white">
@@ -173,7 +169,7 @@ export default function Home() {
                     </span>
                     {recipe.halal && (
                       <span className="px-2 py-1 bg-green-500/80 text-white rounded-full text-[12px] font-bold uppercase tracking-wider backdrop-blur-md">
-                        حلال
+                        Halal
                       </span>
                     )}
                   </div>

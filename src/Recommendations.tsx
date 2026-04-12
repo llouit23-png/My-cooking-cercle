@@ -210,17 +210,15 @@ export default function Recommendations() {
                   : "border-red-50 opacity-80"
               )}
             >
-              {recipe.image_url && (
-                <div className="h-48 overflow-hidden relative">
-                  <img 
-                    src={recipe.image_url} 
-                    alt={recipe.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
-              )}
+              <div className="h-48 overflow-hidden relative">
+                <img 
+                  src={recipe.image_url || `https://picsum.photos/seed/${recipe.title}/800/600`} 
+                  alt={recipe.title}
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+              </div>
               <div className="p-8">
                 <div className="flex justify-between items-start gap-4 mb-6">
                 <div className="space-y-2">
@@ -232,7 +230,7 @@ export default function Recommendations() {
                     {recipe.dairy_free && <MilkOff className="w-4 h-4 text-pink-400" />}
                     {recipe.halal && (
                       <span className="flex items-center gap-1 px-2 py-0.5 bg-green-50 text-green-600 rounded-full text-[11px] font-bold border border-green-100">
-                        حلال
+                        Halal
                       </span>
                     )}
                   </div>
@@ -347,14 +345,12 @@ export default function Recommendations() {
               className="bg-white w-full max-w-2xl max-h-[90vh] rounded-[3rem] shadow-2xl overflow-hidden flex flex-col"
             >
               <div className="relative h-80 bg-gray-900 p-8 text-white flex flex-col justify-end">
-                {selectedRecipe.image_url && (
-                  <img 
-                    src={selectedRecipe.image_url} 
-                    alt={selectedRecipe.title}
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 w-full h-full object-cover"
-                  />
-                )}
+                <img 
+                  src={selectedRecipe.image_url || `https://picsum.photos/seed/${selectedRecipe.title}/800/600`} 
+                  alt={selectedRecipe.title}
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 <button 
                   onClick={() => {
@@ -372,7 +368,7 @@ export default function Recommendations() {
                     </span>
                     {selectedRecipe.halal && (
                       <span className="px-3 py-1 bg-green-500/80 text-white rounded-full text-[12px] font-bold uppercase tracking-wider backdrop-blur-md">
-                        حلال
+                        Halal
                       </span>
                     )}
                   </div>

@@ -77,19 +77,19 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read: if isAuthenticated();
+      allow read: if true;
       allow create, update: if isAuthenticated() && isValidUser(request.resource.data);
       allow delete: if isAdmin();
     }
 
     match /constraints/{constraintId} {
-      allow read: if isAuthenticated();
+      allow read: if true;
       allow create, update: if isAuthenticated() && isValidConstraint(request.resource.data);
       allow delete: if isAdmin();
     }
 
     match /recipes/{recipeId} {
-      allow read: if isAuthenticated();
+      allow read: if true;
       allow create, update: if isAuthenticated() && isValidRecipe(request.resource.data);
       allow delete: if isAdmin();
     }

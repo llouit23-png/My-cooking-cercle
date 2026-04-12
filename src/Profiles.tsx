@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { User as UserIcon, AlertCircle, CheckCircle2, Plus, Trash2, Save, X, Edit2, ChevronDown, ChevronUp } from 'lucide-react';
 import { User, DietaryConstraint } from './types';
 import { cn, capitalizeWords } from './lib/utils';
-import { db, collection, onSnapshot, setDoc, doc, deleteDoc, OperationType, handleFirestoreError, auth } from './firebase';
+import { db, collection, onSnapshot, setDoc, doc, deleteDoc, OperationType, handleFirestoreError } from './firebase';
 
 const CONSTRAINT_LABELS: Record<string, { label: string, color: string, iconColor: string }> = {
   'dislike': { label: "N'aime pas", color: 'bg-orange-50 border-orange-100 text-orange-700', iconColor: 'text-orange-500' },
@@ -62,14 +62,6 @@ function ProfileCard({
   const [isExpanded, setIsExpanded] = React.useState(false);
   const isEditing = editingUserId === user.user_id;
 
-  const checkAuth = (action: () => void) => {
-    if (!auth.currentUser) {
-      alert("Veuillez vous connecter pour effectuer cette action.");
-      return;
-    }
-    action();
-  };
-
   return (
     <motion.div
       layout
@@ -91,7 +83,7 @@ function ProfileCard({
                   className="w-full px-2 py-1 bg-gray-50 border border-[#FF7675] rounded-lg text-base font-bold outline-none"
                   autoFocus
                 />
-                <button onClick={() => checkAuth(() => saveName(user.user_id))} className="p-1 text-green-600 hover:bg-green-50 rounded">
+                <button onClick={() => saveName(user.user_id)} className="p-1 text-green-600 hover:bg-green-50 rounded">
                   <Save className="w-4 h-4" />
                 </button>
                 <button onClick={() => setEditingUserId(null)} className="p-1 text-gray-400 hover:bg-gray-50 rounded">
@@ -102,7 +94,7 @@ function ProfileCard({
               <div className="flex items-center gap-2">
                 <h3 className="text-lg font-bold text-[#2D3436] truncate">{user.name}</h3>
                 <button 
-                  onClick={() => checkAuth(() => startEditing(user))}
+                  onClick={() => startEditing(user)}
                   className="p-1 text-gray-300 hover:text-[#FF7675] opacity-0 group-hover:opacity-100 transition-all"
                 >
                   <Edit2 className="w-3 h-3" />
@@ -111,7 +103,7 @@ function ProfileCard({
             )}
             <div className="flex items-center gap-2">
               <p className="text-xs text-[#636E72]">ID: #{user.user_id}</p>
-              <span className="text-[10px] text-[#B2BEC3]">•</span>
+              <span className="text-[10px] text-[#B2BEC3]">-</span>
               <p className="text-[10px] font-bold uppercase text-[#FF7675]">
                 {constraints.length} restriction{constraints.length > 1 ? 's' : ''}
               </p>
@@ -121,7 +113,7 @@ function ProfileCard({
         <div className="flex items-center gap-1">
           {!isEditing && (
             <button 
-              onClick={() => checkAuth(() => deleteUser(user.user_id))}
+              onClick={() => deleteUser(user.user_id)}
               className="p-2 text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
             >
               <Trash2 className="w-4 h-4" />
@@ -156,7 +148,7 @@ function ProfileCard({
                       const val = e.target.value;
                       if (!val) return;
                       const [type, label] = val.split('|');
-                      checkAuth(() => addConstraint(user.user_id, type, label));
+                      addConstraint(user.user_id, type, label);
                       e.target.value = '';
                     }}
                     defaultValue=""
@@ -193,7 +185,7 @@ function ProfileCard({
                             <span className="truncate">{capitalizeWords(c.constraint_value)}</span>
                           </div>
                           <button 
-                            onClick={() => checkAuth(() => removeConstraint(c.constraint_id))}
+                            onClick={() => removeConstraint(c.constraint_id)}
                             className="text-gray-400 hover:text-red-500 opacity-0 group-hover/item:opacity-100 transition-all"
                           >
                             <X className="w-4 h-4" />
@@ -219,7 +211,7 @@ function ProfileCard({
                       const input = form.elements.namedItem('customValue') as HTMLInputElement;
                       const type = form.elements.namedItem('customType') as HTMLSelectElement;
                       if (input.value && type.value) {
-                        checkAuth(() => addConstraint(user.user_id, type.value, input.value));
+                        addConstraint(user.user_id, type.value, input.value);
                         input.value = '';
                       }
                     }}
@@ -265,14 +257,6 @@ export default function Profiles() {
   const [newUser, setNewUser] = React.useState({ name: '', notes: '' });
   const [editingUserId, setEditingUserId] = React.useState<number | null>(null);
   const [editName, setEditName] = React.useState('');
-
-  const checkAuth = (action: () => void) => {
-    if (!auth.currentUser) {
-      alert("Veuillez vous connecter pour effectuer cette action.");
-      return;
-    }
-    action();
-  };
 
   React.useEffect(() => {
     const unsubUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
@@ -375,7 +359,7 @@ export default function Profiles() {
           <p className="text-[#636E72]">Ajoutez vos amis et leurs préférences alimentaires.</p>
         </div>
         <button 
-          onClick={() => checkAuth(() => setIsAddingUser(true))}
+          onClick={() => setIsAddingUser(true)}
           className="flex items-center gap-2 px-6 py-3 bg-[#FF7675] text-white rounded-2xl font-bold shadow-lg hover:bg-[#FF7675]/90 transition-all"
         >
           <Plus className="w-5 h-5" />
@@ -411,7 +395,7 @@ export default function Profiles() {
                 Annuler
               </button>
               <button 
-                onClick={() => checkAuth(addUser)}
+                onClick={addUser}
                 className="px-8 py-3 bg-[#2D3436] text-white rounded-xl font-bold"
               >
                 Enregistrer le profil

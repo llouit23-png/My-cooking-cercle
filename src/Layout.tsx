@@ -4,6 +4,7 @@ import { ChefHat, Users, BookOpen, Home as HomeIcon, Menu, X, LogIn, LogOut, Glo
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
 import { auth, googleProvider, signInWithPopup, onAuthStateChanged, FirebaseUser } from './firebase';
+import { seedDatabase } from './lib/seed';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -18,6 +19,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       setUser(user);
       setLoading(false);
     });
+
+    // Auto-seed if empty
+    seedDatabase();
+
     return () => unsubscribe();
   }, []);
 
@@ -88,28 +93,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ))}
               
               {user ? (
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    {user.photoURL && (
-                      <img 
-                        src={user.photoURL} 
-                        alt={user.displayName || ""} 
-                        className="w-8 h-8 rounded-full border border-[#E5E7EB]"
-                        referrerPolicy="no-referrer"
-                      />
-                    )}
-                    <span className="hidden lg:block text-sm font-medium text-[#2D3436]">
-                      {user.displayName}
-                    </span>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-2 text-sm font-medium text-[#636E72] hover:text-[#FF7675] transition-colors"
-                  >
-                    <LogOut className="w-4 h-4" />
-                    Déconnexion
-                  </button>
-                </div>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 text-sm font-medium text-[#636E72] hover:text-[#FF7675] transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Déconnexion
+                </button>
               ) : (
                 <button
                   onClick={handleLogin}
@@ -186,10 +176,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       <footer className="bg-white border-t border-[#E5E7EB] py-12 mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
           <p className="text-[#636E72] text-sm">
             © 2026 My Cooking Cercle - Projet MBA Data & IA
           </p>
+          <button 
+            onClick={() => {
+              if (confirm("Voulez-vous réinitialiser les données avec les exemples par défaut ?")) {
+                seedDatabase(true).then(() => window.location.reload());
+              }
+            }}
+            className="text-[10px] text-[#B2BEC3] hover:text-[#FF7675] transition-colors uppercase tracking-widest font-bold"
+          >
+            Réinitialiser les données de démonstration
+          </button>
         </div>
       </footer>
     </div>

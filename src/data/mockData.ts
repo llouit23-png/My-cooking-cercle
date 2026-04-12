@@ -51,7 +51,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://res.cloudinary.com/dycoeugum/image/upload/v1774612792/4f7b13b019d85460dc3e459d693483c7_ccmn8s.jpg"
   },
   {
     recipe_id: 2,
@@ -75,7 +76,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: true,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/rizpoulet/800/600"
   },
   {
     recipe_id: 3,
@@ -99,7 +101,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: true,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://res.cloudinary.com/dycoeugum/image/upload/v1774614103/f9731859d26cfe8b60ef5719ae16004db6da4ac13a3f9b38d5a04c97a187289d_bduh2r.png"
   },
   {
     recipe_id: 4,
@@ -122,7 +125,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/steakpdt/800/600"
   },
   {
     recipe_id: 5,
@@ -146,7 +150,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/quiche/800/600"
   },
   {
     recipe_id: 6,
@@ -194,7 +199,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/gratin/800/600"
   },
   {
     recipe_id: 8,
@@ -243,7 +249,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/burger/800/600"
   },
   {
     recipe_id: 10,
@@ -266,7 +273,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://res.cloudinary.com/dycoeugum/image/upload/v1774613142/01acc84d801e49ae1695923615cfb6a337156927c9229a60f9cc9df2e45567b7_svscfz.png"
   },
   {
     recipe_id: 11,
@@ -289,7 +297,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://res.cloudinary.com/dycoeugum/image/upload/v1774613463/2b17e524063773b5e9b61ababac5bd2c0b45458bb37217515e22d7536d312dbe_hvzxvm.png"
   },
   {
     recipe_id: 12,
@@ -313,7 +322,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: true,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/salade/800/600"
   },
   {
     recipe_id: 13,
@@ -344,7 +354,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/chocolat/800/600"
   },
   {
     recipe_id: 14,
@@ -381,7 +392,8 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/tiramisu/800/600"
   },
   {
     recipe_id: 15,
@@ -411,6 +423,7 @@ export const MOCK_RECIPES: Recipe[] = [
     contains_vegetables: false,
     halal: true,
     kosher: true,
-    contains_pork: false
+    contains_pork: false,
+    image_url: "https://picsum.photos/seed/fruits/800/600"
   }
-];
+];;
