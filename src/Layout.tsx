@@ -31,10 +31,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       console.log("Connexion réussie:", result.user.email);
+      // If user is on home page, redirect to circle
+      if (location.pathname === '/' || location.pathname === '/login') {
+        window.location.href = '/circle';
+      }
     } catch (error: any) {
       console.error('Login failed:', error);
       if (error.code === 'auth/unauthorized-domain') {
-        alert("Erreur : Ce domaine n'est pas autorisé dans la console Firebase. Veuillez ajouter votre URL Netlify dans 'Authorized domains' sur Firebase.");
+        alert("Erreur : Ce domaine n'est pas autorisé dans la console Firebase. Veuillez ajouter 'mycookingcircle.netlify.app' dans 'Authorized domains' sur Firebase.");
       } else {
         alert("Erreur de connexion : " + error.message);
       }
@@ -93,21 +97,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               ))}
               
               {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 text-sm font-medium text-[#636E72] hover:text-[#FF7675] transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Déconnexion
-                </button>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-50 rounded-xl border border-gray-100">
+                    {user.photoURL && (
+                      <img src={user.photoURL} alt="" className="w-6 h-6 rounded-full" />
+                    )}
+                    <span className="text-xs font-bold text-[#2D3436]">{user.displayName}</span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 text-sm font-medium text-[#636E72] hover:text-[#FF7675] transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Déconnexion
+                  </button>
+                </div>
               ) : (
-                <button
-                  onClick={handleLogin}
-                  className="flex items-center gap-2 text-sm font-medium text-[#636E72] hover:text-[#FF7675] transition-colors"
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 px-6 py-2.5 bg-[#FF7675] text-white rounded-xl text-sm font-bold shadow-lg hover:bg-[#FF7675]/90 transition-all"
                 >
                   <LogIn className="w-4 h-4" />
                   Connexion
-                </button>
+                </Link>
               )}
             </div>
 
@@ -149,21 +161,30 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 ))}
                 
                 {user ? (
-                  <button
-                    onClick={() => { handleLogout(); setIsMenuOpen(false); }}
-                    className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[#636E72] hover:bg-gray-50 transition-colors"
-                  >
-                    <LogOut className="w-5 h-5" />
-                    Déconnexion
-                  </button>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-xl border border-gray-100">
+                      {user.photoURL && (
+                        <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full" />
+                      )}
+                      <span className="font-bold text-[#2D3436]">{user.displayName}</span>
+                    </div>
+                    <button
+                      onClick={() => { handleLogout(); setIsMenuOpen(false); }}
+                      className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[#636E72] hover:bg-gray-50 transition-colors"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      Déconnexion
+                    </button>
+                  </div>
                 ) : (
-                  <button
-                    onClick={() => { handleLogin(); setIsMenuOpen(false); }}
-                    className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-base font-medium text-[#636E72] hover:bg-gray-50 transition-colors"
+                  <Link
+                    to="/login"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex w-full items-center gap-3 px-4 py-3 rounded-xl text-base font-bold bg-[#FF7675] text-white shadow-lg transition-colors"
                   >
                     <LogIn className="w-5 h-5" />
                     Connexion
-                  </button>
+                  </Link>
                 )}
               </div>
             </motion.div>

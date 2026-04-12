@@ -5,6 +5,8 @@ import Profiles from './Profiles';
 import Recommendations from './Recommendations';
 import AddRecipe from './AddRecipe';
 import WebRecipes from './WebRecipes';
+import Login from './Login';
+import AuthGuard from './components/AuthGuard';
 
 export default function App() {
   return (
@@ -12,7 +14,15 @@ export default function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/circle" element={<Profiles />} />
+          <Route path="/login" element={<Login />} />
+          <Route 
+            path="/circle" 
+            element={
+              <AuthGuard>
+                <Profiles />
+              </AuthGuard>
+            } 
+          />
           <Route path="/recommendations" element={<Recommendations />} />
           <Route path="/recommendations/:recipeId" element={<Recommendations />} />
           <Route path="/add-recipe" element={<AddRecipe />} />
