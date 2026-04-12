@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [isLoggingIn, setIsLoggingIn] = React.useState(false);
   const from = (location.state as any)?.from?.pathname || "/circle";
 
   React.useEffect(() => {
@@ -19,13 +20,27 @@ export default function Login() {
   }, [navigate, from]);
 
   const handleLogin = async () => {
+    if (isLoggingIn) return;
+    setIsLoggingIn(true);
+
     try {
+      // Configuration pour forcer la sélection du compte et éviter certains blocages
+      googleProvider.setCustomParameters({ prompt: 'select_account' });
+      
       await signInWithPopup(auth, googleProvider);
-      navigate(from, { replace: true });
+      // La redirection est gérée par le useEffect onAuthStateChanged
     } catch (error: any) {
+      setIsLoggingIn(false);
       console.error('Login failed:', error);
-      if (error.code === 'auth/unauthorized-domain') {
+      
+      // On gère les erreurs spécifiques
+      if (error.code === 'auth/popup-closed-by-user') {
+        // L'utilisateur a fermé la fenêtre, on ne fait rien ou on log simplement
+        console.log('Connexion annulée : fenêtre fermée par l\'utilisateur');
+      } else if (error.code === 'auth/unauthorized-domain') {
         alert("Erreur : Ce domaine n'est pas autorisé dans la console Firebase. Veuillez ajouter 'mycookingcircle.netlify.app' dans les domaines autorisés sur Firebase.");
+      } else if (error.code === 'auth/popup-blocked') {
+        alert("La fenêtre de connexion a été bloquée par votre navigateur. Veuillez autoriser les popups pour ce site.");
       } else {
         alert("Erreur de connexion : " + error.message);
       }
@@ -56,10 +71,17 @@ export default function Login() {
 
           <button
             onClick={handleLogin}
-            className="w-full flex items-center justify-center gap-4 px-8 py-4 bg-[#2D3436] text-white rounded-2xl font-bold hover:bg-black transition-all shadow-xl transform hover:-translate-y-1 active:scale-95"
+            disabled={isLoggingIn}
+            className={`w-full flex items-center justify-center gap-4 px-8 py-4 bg-[#2D3436] text-white rounded-2xl font-bold transition-all shadow-xl transform ${
+              isLoggingIn ? 'opacity-70 cursor-not-allowed' : 'hover:bg-black hover:-translate-y-1 active:scale-95'
+            }`}
           >
-            <LogIn className="w-5 h-5" />
-            Continuer avec Google
+            {isLoggingIn ? (
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : (
+              <LogIn className="w-5 h-5" />
+            )}
+            {isLoggingIn ? 'Connexion en cours...' : 'Continuer avec Google'}
           </button>
 
           <p className="text-center text-xs text-[#B2BEC3] leading-relaxed">
