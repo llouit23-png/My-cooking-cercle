@@ -1,23 +1,23 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ChefHat, LogIn, ShieldCheck, Heart, Sparkles } from 'lucide-react';
-import { auth, googleProvider, signInWithPopup, onAuthStateChanged } from './firebase';
+import { auth, googleProvider, signInWithPopup } from './firebase';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, loading } = useAuth();
   const [isLoggingIn, setIsLoggingIn] = React.useState(false);
   const from = (location.state as any)?.from?.pathname || "/circle";
 
   React.useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate(from, { replace: true });
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate, from]);
+    // Si l'utilisateur est déjà connecté, on le redirige
+    if (!loading && user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, loading, navigate, from]);
 
   const handleLogin = async () => {
     if (isLoggingIn) return;

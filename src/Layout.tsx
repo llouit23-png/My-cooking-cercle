@@ -1,29 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChefHat, Users, BookOpen, Home as HomeIcon, Menu, X, LogIn, LogOut, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
-import { auth, googleProvider, signInWithPopup, onAuthStateChanged, FirebaseUser } from './firebase';
+import { auth, googleProvider, signInWithPopup } from './firebase';
 import { seedDatabase } from './lib/seed';
+import { useAuth } from './contexts/AuthContext';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [user, setUser] = useState<FirebaseUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, loading } = useAuth();
   const location = useLocation();
 
-  useEffect(() => {
-    console.log("Initialisation de l'état d'authentification...");
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("Changement d'état d'authentification:", user ? user.email : "Déconnecté");
-      setUser(user);
-      setLoading(false);
-    });
-
+  React.useEffect(() => {
     // Auto-seed if empty
     seedDatabase();
-
-    return () => unsubscribe();
   }, []);
 
   const handleLogin = async () => {
@@ -32,10 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       googleProvider.setCustomParameters({ prompt: 'select_account' });
       const result = await signInWithPopup(auth, googleProvider);
       console.log("Connexion réussie:", result.user.email);
-      // If user is on home page, redirect to circle
-      if (location.pathname === '/' || location.pathname === '/login') {
-        window.location.href = '/circle';
-      }
+      // La redirection est gérée par le useEffect dans Login.tsx ou par le changement d'état global
     } catch (error: any) {
       console.error('Login failed:', error);
       if (error.code === 'auth/popup-closed-by-user') {

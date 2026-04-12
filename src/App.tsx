@@ -7,29 +7,32 @@ import AddRecipe from './AddRecipe';
 import WebRecipes from './WebRecipes';
 import Login from './Login';
 import AuthGuard from './components/AuthGuard';
+import { AuthProvider } from './contexts/AuthContext';
 
 export default function App() {
   return (
-    <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route 
-            path="/circle" 
-            element={
-              <AuthGuard>
-                <Profiles />
-              </AuthGuard>
-            } 
-          />
-          <Route path="/recommendations" element={<Recommendations />} />
-          <Route path="/recommendations/:recipeId" element={<Recommendations />} />
-          <Route path="/add-recipe" element={<AddRecipe />} />
-          <Route path="/web-recipes" element={<WebRecipes />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Layout>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route 
+              path="/circle" 
+              element={
+                <AuthGuard>
+                  <Profiles />
+                </AuthGuard>
+              } 
+            />
+            <Route path="/recommendations" element={<Recommendations />} />
+            <Route path="/recommendations/:recipeId" element={<Recommendations />} />
+            <Route path="/add-recipe" element={<AddRecipe />} />
+            <Route path="/web-recipes" element={<WebRecipes />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </AuthProvider>
   );
 }

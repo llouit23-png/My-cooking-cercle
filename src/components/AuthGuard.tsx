@@ -1,19 +1,10 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { auth, onAuthStateChanged, FirebaseUser } from '../firebase';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function AuthGuard({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = React.useState<FirebaseUser | null>(null);
-  const [loading, setLoading] = React.useState(true);
+  const { user, loading } = useAuth();
   const location = useLocation();
-
-  React.useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
 
   if (loading) {
     return (
@@ -24,6 +15,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) {
+    // On ne redirige vers /login que si on est CERTAIN que l'utilisateur n'est pas connecté
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
