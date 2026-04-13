@@ -27,9 +27,9 @@ export default function WebRecipes() {
     setResults([]);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY! });
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
       const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-2.0-flash",
         contents: `Trouve des recettes de cuisine sur internet pour : "${query}". 
         Donne-moi une liste de 3 à 5 recettes avec un titre, un court résumé alléchant et le lien vers la source. 
         Formatte ta réponse de manière structurée pour que je puisse extraire les informations.`,
@@ -38,7 +38,7 @@ export default function WebRecipes() {
         },
       });
 
-      const text = response.text;
+      const text = response.text || "";
       const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
 
       // Extract URLs and titles from grounding metadata

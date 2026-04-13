@@ -12,9 +12,11 @@ import { User, Recipe, DietaryConstraint } from './types';
 import { cn, capitalizeWords } from './lib/utils';
 import { checkGroupCompatibility } from './lib/compatibility';
 import ChatAssistant from './components/ChatAssistant';
-import { db, collection, onSnapshot, OperationType, handleFirestoreError } from './firebase';
+import { db, collection, onSnapshot, OperationType, handleFirestoreError, query, where } from './firebase';
+import { useAuth } from './contexts/AuthContext';
 
 export default function Recommendations() {
+  const { user: authUser } = useAuth();
   const { recipeId } = useParams();
   const navigate = useNavigate();
   const [users, setUsers] = React.useState<User[]>([]);
@@ -36,7 +38,10 @@ export default function Recommendations() {
   }, [selectedRecipe]);
 
   React.useEffect(() => {
-    const unsubUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
+    if (!authUser) return;
+
+    const usersQuery = query(collection(db, 'users'), where('owner_id', '==', authUser.uid));
+    const unsubUsers = onSnapshot(usersQuery, (snapshot) => {
       const usersData = snapshot.docs.map(doc => doc.data() as User);
       setUsers(usersData.sort((a, b) => a.user_id - b.user_id));
       if (selectedUserIds.length === 0) {
@@ -50,7 +55,8 @@ export default function Recommendations() {
       setRecipes(recipesData.sort((a, b) => a.recipe_id - b.recipe_id));
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'recipes'));
 
-    const unsubConstraints = onSnapshot(collection(db, 'constraints'), (snapshot) => {
+    const constraintsQuery = query(collection(db, 'constraints'), where('owner_id', '==', authUser.uid));
+    const unsubConstraints = onSnapshot(constraintsQuery, (snapshot) => {
       const constraintsData = snapshot.docs.map(doc => doc.data() as DietaryConstraint);
       setConstraints(constraintsData.sort((a, b) => a.constraint_id - b.constraint_id));
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'constraints'));
@@ -60,7 +66,7 @@ export default function Recommendations() {
       unsubRecipes();
       unsubConstraints();
     };
-  }, []);
+  }, [authUser]);
 
   React.useEffect(() => {
     if (recipeId && recipes.length > 0) {

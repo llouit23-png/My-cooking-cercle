@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { User as UserIcon, AlertCircle, CheckCircle2, Plus, Trash2, Save, X, Edit2, ChevronDown, ChevronUp } from 'lucide-react';
 import { User, DietaryConstraint } from './types';
 import { cn, capitalizeWords } from './lib/utils';
-import { db, collection, onSnapshot, setDoc, doc, deleteDoc, OperationType, handleFirestoreError } from './firebase';
+import { db, collection, onSnapshot, setDoc, doc, deleteDoc, OperationType, handleFirestoreError, query, where } from './firebase';
+import { useAuth } from './contexts/AuthContext';
 
 const CONSTRAINT_LABELS: Record<string, { label: string, color: string, iconColor: string }> = {
   'dislike': { label: "N'aime pas", color: 'bg-orange-50 border-orange-100 text-orange-700', iconColor: 'text-orange-500' },
@@ -250,6 +251,7 @@ function ProfileCard({
 }
 
 export default function Profiles() {
+  const { user: authUser } = useAuth();
   const [users, setUsers] = React.useState<User[]>([]);
   const [constraints, setConstraints] = React.useState<DietaryConstraint[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -259,13 +261,17 @@ export default function Profiles() {
   const [editName, setEditName] = React.useState('');
 
   React.useEffect(() => {
-    const unsubUsers = onSnapshot(collection(db, 'users'), (snapshot) => {
+    if (!authUser) return;
+
+    const usersQuery = query(collection(db, 'users'), where('owner_id', '==', authUser.uid));
+    const unsubUsers = onSnapshot(usersQuery, (snapshot) => {
       const usersData = snapshot.docs.map(doc => doc.data() as User);
       setUsers(usersData.sort((a, b) => a.user_id - b.user_id));
       setLoading(false);
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'users'));
 
-    const unsubConstraints = onSnapshot(collection(db, 'constraints'), (snapshot) => {
+    const constraintsQuery = query(collection(db, 'constraints'), where('owner_id', '==', authUser.uid));
+    const unsubConstraints = onSnapshot(constraintsQuery, (snapshot) => {
       const constraintsData = snapshot.docs.map(doc => doc.data() as DietaryConstraint);
       setConstraints(constraintsData.sort((a, b) => a.constraint_id - b.constraint_id));
     }, (error) => handleFirestoreError(error, OperationType.LIST, 'constraints'));
@@ -274,30 +280,35 @@ export default function Profiles() {
       unsubUsers();
       unsubConstraints();
     };
-  }, []);
+  }, [authUser]);
 
   const addUser = async () => {
-    const id = users.length > 0 ? Math.max(...users.map(u => u.user_id)) + 1 : 1;
-    const user = { user_id: id, ...newUser };
+    if (!authUser) return;
+    const id = Date.now(); // Use timestamp for unique numeric ID
+    const user = { user_id: id, ...newUser, owner_id: authUser.uid };
+    const docId = `${authUser.uid}_${id}`;
     try {
-      await setDoc(doc(db, 'users', id.toString()), user);
+      await setDoc(doc(db, 'users', docId), user);
       setIsAddingUser(false);
       setNewUser({ name: '', notes: '' });
     } catch (error) {
-      handleFirestoreError(error, OperationType.CREATE, `users/${id}`);
+      handleFirestoreError(error, OperationType.CREATE, `users/${docId}`);
     }
   };
 
   const deleteUser = async (id: number) => {
+    if (!authUser) return;
+    const docId = `${authUser.uid}_${id}`;
     try {
-      await deleteDoc(doc(db, 'users', id.toString()));
+      await deleteDoc(doc(db, 'users', docId));
       // Also delete associated constraints
       const userConstraints = constraints.filter(c => c.user_id === id);
       for (const c of userConstraints) {
-        await deleteDoc(doc(db, 'constraints', c.constraint_id.toString()));
+        const cDocId = `${authUser.uid}_${c.constraint_id}`;
+        await deleteDoc(doc(db, 'constraints', cDocId));
       }
     } catch (error) {
-      handleFirestoreError(error, OperationType.DELETE, `users/${id}`);
+      handleFirestoreError(error, OperationType.DELETE, `users/${docId}`);
     }
   };
 
@@ -307,32 +318,44 @@ export default function Profiles() {
   };
 
   const saveName = async (userId: number) => {
+    if (!authUser) return;
+    const docId = `${authUser.uid}_${userId}`;
     try {
       const user = users.find(u => u.user_id === userId);
       if (user) {
-        await setDoc(doc(db, 'users', userId.toString()), { ...user, name: editName });
+        await setDoc(doc(db, 'users', docId), { ...user, name: editName });
       }
       setEditingUserId(null);
     } catch (error) {
-      handleFirestoreError(error, OperationType.UPDATE, `users/${userId}`);
+      handleFirestoreError(error, OperationType.UPDATE, `users/${docId}`);
     }
   };
 
   const addConstraint = async (userId: number, type: string, value: string) => {
-    const id = constraints.length > 0 ? Math.max(...constraints.map(c => c.constraint_id)) + 1 : 1;
-    const constraint = { constraint_id: id, user_id: userId, constraint_type: type, constraint_value: value };
+    if (!authUser) return;
+    const id = Date.now();
+    const constraint = { 
+      constraint_id: id, 
+      user_id: userId, 
+      constraint_type: type, 
+      constraint_value: value,
+      owner_id: authUser.uid 
+    };
+    const docId = `${authUser.uid}_${id}`;
     try {
-      await setDoc(doc(db, 'constraints', id.toString()), constraint);
+      await setDoc(doc(db, 'constraints', docId), constraint);
     } catch (error) {
-      handleFirestoreError(error, OperationType.CREATE, `constraints/${id}`);
+      handleFirestoreError(error, OperationType.CREATE, `constraints/${docId}`);
     }
   };
 
   const removeConstraint = async (id: number) => {
+    if (!authUser) return;
+    const docId = `${authUser.uid}_${id}`;
     try {
-      await deleteDoc(doc(db, 'constraints', id.toString()));
+      await deleteDoc(doc(db, 'constraints', docId));
     } catch (error) {
-      handleFirestoreError(error, OperationType.DELETE, `constraints/${id}`);
+      handleFirestoreError(error, OperationType.DELETE, `constraints/${docId}`);
     }
   };
 

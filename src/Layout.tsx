@@ -13,9 +13,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   React.useEffect(() => {
-    // Auto-seed if empty
-    seedDatabase();
-  }, []);
+    // Auto-seed if empty and user is logged in
+    if (user) {
+      seedDatabase(user.uid);
+    }
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -175,8 +177,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </p>
           <button 
             onClick={() => {
-              if (confirm("Voulez-vous réinitialiser les données avec les exemples par défaut ?")) {
-                seedDatabase(true).then(() => window.location.reload());
+              if (user && confirm("Voulez-vous réinitialiser les données avec les exemples par défaut ?")) {
+                seedDatabase(user.uid, true).then(() => window.location.reload());
               }
             }}
             className="text-[10px] text-[#B2BEC3] hover:text-[#FF7675] transition-colors uppercase tracking-widest font-bold"
