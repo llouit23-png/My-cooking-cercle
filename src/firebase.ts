@@ -10,9 +10,9 @@ const firebaseConfig = {
   appId: "1:348611670732:web:bba51b5a681a9bd8750869",
   // Clé API encodée pour éviter le blocage par les scanners de sécurité
   apiKey: atob("QUl6YVN5Q3Fub01RWU82SU9tVm83dGc5TEpjTUg5RW9FUS12dmdR"),
-  authDomain: typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-    ? "gen-lang-client-0468097792.firebaseapp.com"
-    : "mycookingcircle.netlify.app",
+  authDomain: typeof window !== 'undefined' && (window.location.hostname.includes('netlify.app') || window.location.hostname.includes('mycookingcircle.app'))
+    ? "mycookingcircle.netlify.app"
+    : "gen-lang-client-0468097792.firebaseapp.com",
   firestoreDatabaseId: "ai-studio-3abee3a5-4c8a-4eed-afc5-5426d0c5bc56",
   storageBucket: "gen-lang-client-0468097792.firebasestorage.app",
   messagingSenderId: "348611670732",

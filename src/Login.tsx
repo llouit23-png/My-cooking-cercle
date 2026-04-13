@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ChefHat, LogIn, ShieldCheck, Heart, Sparkles } from 'lucide-react';
+import { ChefHat, LogIn, ShieldCheck, Heart, Sparkles, AlertCircle } from 'lucide-react';
 import { auth, googleProvider, signInWithPopup } from './firebase';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
@@ -9,43 +9,59 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, loading } = useAuth();
-  const [isLoggingIn, setIsLoggingIn] = React.useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const from = (location.state as any)?.from?.pathname || "/circle";
 
-  React.useEffect(() => {
-    // Si l'utilisateur est déjà connecté, on le redirige
+  useEffect(() => {
+    // Si l'utilisateur est déjà connecté, on le redirige immédiatement
     if (!loading && user) {
+      console.log("Utilisateur déjà connecté, redirection vers:", from);
       navigate(from, { replace: true });
     }
   }, [user, loading, navigate, from]);
 
   const handleLogin = async () => {
     if (isLoggingIn) return;
+    
     setIsLoggingIn(true);
+    setError(null);
+    console.log("Déclenchement de la connexion Google...");
 
     try {
-      // Configuration pour forcer la sélection du compte et éviter certains blocages
+      // On force la sélection du compte pour éviter les sessions fantômes
       googleProvider.setCustomParameters({ prompt: 'select_account' });
       
-      await signInWithPopup(auth, googleProvider);
-      // La redirection est gérée par le useEffect onAuthStateChanged
-    } catch (error: any) {
+      // Appel direct pour éviter le blocage des popups par le navigateur
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log("Connexion réussie pour:", result.user.email);
+      // La redirection sera gérée par le useEffect ci-dessus une fois que useAuth aura mis à jour l'état
+    } catch (err: any) {
       setIsLoggingIn(false);
-      console.error('Login failed:', error);
-      
-      // On gère les erreurs spécifiques
-      if (error.code === 'auth/popup-closed-by-user') {
-        // L'utilisateur a fermé la fenêtre, on ne fait rien ou on log simplement
-        console.log('Connexion annulée : fenêtre fermée par l\'utilisateur');
-      } else if (error.code === 'auth/unauthorized-domain') {
-        alert("Erreur : Ce domaine n'est pas autorisé dans la console Firebase. Veuillez ajouter 'mycookingcircle.netlify.app' dans les domaines autorisés sur Firebase.");
-      } else if (error.code === 'auth/popup-blocked') {
-        alert("La fenêtre de connexion a été bloquée par votre navigateur. Veuillez autoriser les popups pour ce site.");
+      console.error('Erreur détaillée de connexion:', err);
+
+      // Gestion fine des erreurs pour guider l'utilisateur
+      if (err.code === 'auth/popup-closed-by-user') {
+        setError("La fenêtre de connexion a été fermée avant la fin.");
+      } else if (err.code === 'auth/popup-blocked') {
+        setError("La fenêtre a été bloquée. Veuillez autoriser les popups pour ce site.");
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setError("Ce domaine n'est pas autorisé. Veuillez vérifier la console Firebase.");
+      } else if (err.code === 'auth/cancelled-popup-request') {
+        setError("Une tentative de connexion est déjà en cours.");
       } else {
-        alert("Erreur de connexion : " + error.message);
+        setError("Erreur : " + (err.message || "Impossible de se connecter"));
       }
     }
   };
+
+  if (loading && !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FF7675]"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
@@ -63,6 +79,17 @@ export default function Login() {
         </div>
 
         <div className="p-12 space-y-8">
+          {error && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 text-red-600 text-sm"
+            >
+              <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+              <p>{error}</p>
+            </motion.div>
+          )}
+
           <div className="space-y-4">
             <FeatureItem icon={ShieldCheck} text="Données sécurisées avec Firebase" />
             <FeatureItem icon={Heart} text="Tes préférences sauvegardées" />

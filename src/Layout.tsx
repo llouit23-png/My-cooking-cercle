@@ -17,27 +17,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     seedDatabase();
   }, []);
 
-  const handleLogin = async () => {
-    console.log("Tentative de connexion Google...");
-    try {
-      googleProvider.setCustomParameters({ prompt: 'select_account' });
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log("Connexion réussie:", result.user.email);
-      // La redirection est gérée par le useEffect dans Login.tsx ou par le changement d'état global
-    } catch (error: any) {
-      console.error('Login failed:', error);
-      if (error.code === 'auth/popup-closed-by-user') {
-        console.log('Connexion annulée : fenêtre fermée par l\'utilisateur');
-      } else if (error.code === 'auth/unauthorized-domain') {
-        alert("Erreur : Ce domaine n'est pas autorisé dans la console Firebase. Veuillez ajouter 'mycookingcircle.netlify.app' dans 'Authorized domains' sur Firebase.");
-      } else if (error.code === 'auth/popup-blocked') {
-        alert("La fenêtre de connexion a été bloquée par votre navigateur. Veuillez autoriser les popups pour ce site.");
-      } else {
-        alert("Erreur de connexion : " + error.message);
-      }
-    }
-  };
-
   const handleLogout = async () => {
     try {
       await auth.signOut();
