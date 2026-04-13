@@ -26,31 +26,39 @@ export default function Login() {
     
     setIsLoggingIn(true);
     setError(null);
-    console.log("Déclenchement de la connexion Google...");
+    console.log("Démarrage du flux de connexion Google...");
+
+    // Timeout de sécurité pour ne pas rester bloqué indéfiniment si la popup ne répond pas
+    const timeoutId = setTimeout(() => {
+      if (isLoggingIn) {
+        console.warn("La connexion semble prendre du temps. Vérifiez si une fenêtre est bloquée.");
+        setError("La connexion prend du temps. Vérifiez si votre navigateur bloque les fenêtres surgissantes.");
+      }
+    }, 10000);
 
     try {
-      // On force la sélection du compte pour éviter les sessions fantômes
       googleProvider.setCustomParameters({ prompt: 'select_account' });
       
-      // Appel direct pour éviter le blocage des popups par le navigateur
+      console.log("Appel de signInWithPopup...");
       const result = await signInWithPopup(auth, googleProvider);
-      console.log("Connexion réussie pour:", result.user.email);
-      // La redirection sera gérée par le useEffect ci-dessus une fois que useAuth aura mis à jour l'état
+      
+      clearTimeout(timeoutId);
+      console.log("Succès de signInWithPopup pour:", result.user.email);
     } catch (err: any) {
+      clearTimeout(timeoutId);
       setIsLoggingIn(false);
-      console.error('Erreur détaillée de connexion:', err);
+      console.error('Erreur Firebase Auth:', err.code, err.message);
 
-      // Gestion fine des erreurs pour guider l'utilisateur
       if (err.code === 'auth/popup-closed-by-user') {
-        setError("La fenêtre de connexion a été fermée avant la fin.");
+        setError("Vous avez fermé la fenêtre de connexion.");
       } else if (err.code === 'auth/popup-blocked') {
-        setError("La fenêtre a été bloquée. Veuillez autoriser les popups pour ce site.");
+        setError("La fenêtre de connexion a été bloquée. Veuillez autoriser les popups pour ce site.");
       } else if (err.code === 'auth/unauthorized-domain') {
-        setError("Ce domaine n'est pas autorisé. Veuillez vérifier la console Firebase.");
-      } else if (err.code === 'auth/cancelled-popup-request') {
-        setError("Une tentative de connexion est déjà en cours.");
+        setError("Ce domaine n'est pas autorisé. Ajoutez 'mycookingcircle.netlify.app' dans la console Firebase.");
+      } else if (err.code === 'auth/network-request-failed') {
+        setError("Erreur réseau. Vérifiez votre connexion internet.");
       } else {
-        setError("Erreur : " + (err.message || "Impossible de se connecter"));
+        setError(`Erreur (${err.code}) : ${err.message}`);
       }
     }
   };
